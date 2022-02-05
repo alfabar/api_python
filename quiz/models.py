@@ -36,6 +36,7 @@ class Updated(models.Model):
     date_updated = models.DateField(
         verbose_name=_("Last Updated"), auto_now=True
     )
+
     class Meta:
         abstract = True
 
@@ -43,12 +44,11 @@ class Updated(models.Model):
 class Question(Updated):
 
     class Meta:
-        verbose_name =_("Question")
+        verbose_name = _("Question")
         verbose_name_plural = _("Questions")
         ordering = ['id']
 
-
-        SCALE =(
+        SCALE = (
             (0, _('Fundamental')),
             (1, _('Beginner')),
             (2, _('Intermediario')),
@@ -57,15 +57,27 @@ class Question(Updated):
 
         )
 
-
-
+        TYPE = (
+            (0, _('Multiple Choice')),
+        )
 
     quiz = models.ForeignKey(
         Quizzes, related_name='question', on_delete=models.DO_NOTHING)
-    pass
+
+    technique = models.IntegerField(
+        choices=TYPE, default=0, verbose_name=_("Type of Question"))
+    title = models.CharField(max_length=255, verbose_name=_("Title"))
+    dificult = models.IntegerField(
+        choices=SCALE, default=0, verbose_name=_("Difficult"))
+    date_created = models.DateTimeField(
+        auto_now_add=True, verbose_name=_("Date Created"))
+    is_active = models.BooleanField(
+        default=False, verbose_name=_("Active Status"))
+
+        def __str__(self):
+            return self.title
 
 
 class Answer(Updated):
     question = models.ForeignKey(
         Question, related_name='answer', on_delete=models.DO_NOTHING)
-    pass
