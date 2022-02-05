@@ -48,6 +48,16 @@ class Question(Updated):
         ordering = ['id']
 
 
+        SCALE =(
+            (0, _('Fundamental')),
+            (1, _('Beginner')),
+            (2, _('Intermediario')),
+            (3, _('Advanced')),
+            (4, _('Expert')),
+
+        )
+
+
 
 
     quiz = models.ForeignKey(
