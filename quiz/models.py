@@ -25,19 +25,37 @@ class Quizzes(models.Model):
     category = models.ForeignKey(
         Category, default=1, on_delete=models.DO_NOTHING)
 
-        date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(auto_now_add=True)
 
-        def __str__(self):
-            return self.title
+    def __str__(self):
+        return self.title
 
 
-class Question(UpdatedQuestio):
+class Updated(models.Model):
+
+    date_updated = models.DateField(
+        verbose_name=_("Last Updated"), auto_now=True
+    )
+    class Meta:
+        abstract = True
+
+
+class Question(Updated):
+
+    class Meta:
+        verbose_name =_("Question")
+        verbose_name_plural = _("Questions")
+        ordering = ['id']
+
+
+
+
     quiz = models.ForeignKey(
         Quizzes, related_name='question', on_delete=models.DO_NOTHING)
     pass
 
 
-class Answer(UpdatedQuestion):
+class Answer(Updated):
     question = models.ForeignKey(
         Question, related_name='answer', on_delete=models.DO_NOTHING)
     pass
